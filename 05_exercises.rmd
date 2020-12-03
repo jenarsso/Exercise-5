@@ -123,7 +123,7 @@ ggplotly(lettuce_harvest,
   2. Use animation to tell an interesting story with the `small_trains` dataset that contains data from the SNCF (National Society of French Railways). These are Tidy Tuesday data! Read more about it [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-02-26).
 
 
-```{r}
+```{r, eval= FALSE}
 small_trains %>% 
   select(year, service, delayed_number) %>% 
   group_by(year) %>% 
@@ -132,11 +132,11 @@ small_trains %>%
   ggplot(aes(x=year, y = avg_delayed_per)) + 
   geom_line() + 
   theme(legend.position = "none") + 
-  labs(title = "Delayed trips by year", y = "Average percentage delayed")+
+  labs(title = "Delayed trips by year", y = "Average proportion delayed")+
   scale_x_continuous(breaks=c(2015,2016,2017)) +
   transition_reveal(year)
 ```
-```{r}
+```{r, eval= FALSE}
 anim_save("draft_train.gif")
 ```
 
@@ -156,7 +156,7 @@ knitr::include_graphics("draft_train.gif")
 
 I have started the code for you below. The `complete()` function creates a row for all unique `date`/`variety` combinations. If a variety is not harvested on one of the harvest dates in the dataset, it is filled with a value of 0.
 
-```{r}
+```{r, eval= FALSE}
 garden_harvest %>% 
   filter(vegetable == "tomatoes") %>% 
   group_by(date, variety) %>% 
@@ -174,7 +174,7 @@ garden_harvest %>%
   transition_reveal(date)
 
 ```
-```{r}
+```{r, eval= FALSE}
 anim_save("cumharvest.gif")
 ```
 
@@ -195,7 +195,7 @@ knitr::include_graphics("cumharvest.gif")
   * CHALLENGE: use the `ggimage` package and `geom_image` to add a bike image instead of a red point. You can use [this](https://raw.githubusercontent.com/llendway/animation_and_interactivity/master/bike.png) image. See [here](https://goodekat.github.io/presentations/2019-isugg-gganimate-spooky/slides.html#35) for an example. 
   * Add something of your own! And comment on if you prefer this to the static map and why or why not.
 
-```{r}
+```{r, eval= FALSE}
 bike_image <-"https://raw.githubusercontent.com/llendway/animation_and_interactivity/master/bike.png"
 
 mallorca_map = get_stamenmap(bbox= c(left = 2.28, bottom = 39.4, right = 2.9, top = 39.8),
@@ -215,7 +215,7 @@ mallorca_bike<-
 
 animate(mallorca_bike, duration = 30)
 ```
-```{r}
+```{r, eval= FALSE}
 anim_save("mallorcabike.gif")
 ```
 
@@ -228,7 +228,7 @@ I much prefer the animation. It adds an extra dimension of information, revealin
   
   5. In this exercise, you get to meet my sister, Heather! She is a proud Mac grad, currently works as a Data Scientist at 3M where she uses R everyday, and for a few years (while still holding a full-time job) she was a pro triathlete. You are going to map one of her races. The data from each discipline of the Ironman 70.3 Pan Am championships, Panama is in a separate file - `panama_swim`, `panama_bike`, and `panama_run`. Create a similar map to the one you created with my cycling data. You will need to make some small changes: 1. combine the files (HINT: `bind_rows()`, 2. make the leading dot a different color depending on the event (for an extra challenge, make it a different image using `geom_image()!), 3. CHALLENGE (optional): color by speed, which you will need to compute on your own from the data. You can read Heather's race report [here](https://heatherlendway.com/2016/02/10/ironman-70-3-pan-american-championships-panama-race-report/). She is also in the Macalester Athletics [Hall of Fame](https://athletics.macalester.edu/honors/hall-of-fame/heather-lendway/184) and still has records at the pool. 
   
-```{r}
+```{r, eval= FALSE}
 panama_race <- bind_rows(panama_swim, panama_bike, panama_run)
 
 panama_race_2<- panama_race %>% 
@@ -259,17 +259,14 @@ ggmap(panama_map) +
   ggnewscale::new_scale_color() +
   geom_point(data = panama_race_2,
             aes(x=lon, y = lat, color = event)) +
-  scale_fill_manual(values = c("red", "blue", "green")) +
-  theme(legend.box.background = element_blank(),
-        legend.background =  element_blank(),
-        legend.position = "right") +
-   #have tried to move this, but after a long time searching online, I could not find any clear solutions. I think the issue is that there are two legends. I am unsure how to change this...
+ scale_color_manual(values = c("red", "blue", "green")) +
   theme_map() +
+  theme(legend.position =  "bottom", legend.background = element_blank()) +
   labs(title = "Ironman in Panama") +
   transition_reveal(time)
 ```
 
-```{r}
+```{r, eval= FALSE}
 anim_save("panama_speed.gif")
 ```
 
@@ -290,7 +287,7 @@ knitr::include_graphics("panama_speed.gif")
   * Use the `animate()` function to have 200 frames in your animation and make it 30 seconds long. 
   * Comment on what you observe.
   
-```{r}
+```{r, eval= FALSE}
 us_states_covid<- covid19 %>% 
   select(state, cases, date) %>% 
   group_by(state) %>% 
@@ -314,7 +311,7 @@ us_states_covid<- covid19 %>%
 animate(us_states_covid, duration = 30, nframes = 200)
 ```
 
-```{r}
+```{r, eval= FALSE}
 anim_save("draftcovidweek.gif")
 ```
 
@@ -335,7 +332,7 @@ census_pop_est_2018 <- read_csv("https://www.dropbox.com/s/6txwv3b4ng7pepe/us_ce
   mutate(state = str_to_lower(state))
 ```
 
-```{r}
+```{r, eval= FALSE}
 states_map <- map_data("state")
 
 covid19 %>% 
@@ -358,7 +355,7 @@ covid19 %>%
 ```
 
 
-```{r}
+```{r, eval= FALSE}
 anim_save("uscovid.gif")
 ```
 
@@ -378,7 +375,6 @@ NOT DUE THIS WEEK! If any of you want to work ahead, this will be on next week's
 
   9. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 05_exercises.Rmd, provide a link to the 05_exercises.md file, which is the one that will be most readable on GitHub. If that file isn't very readable, then provide a link to your main GitHub page.
   
-https://github.com/jenarsso/Exercise-5
-
+https://github.com/jenarsso/Exercise-5/blob/main/05_exercises.rmd
 
 **DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**
